@@ -1,0 +1,11 @@
+import express from 'express';
+import { createTransaction, deleteTransactionById, getSummaryByUserId, getTransactionsByUserId } from '../controllers/transactionsController.js';
+
+const router = express.Router();
+
+router.get('/:userId', getTransactionsByUserId);
+router.delete('/:id', deleteTransactionById);
+router.post('/', createTransaction);
+router.get('/summary/:userId', getSummaryByUserId);
+
+export default router;
