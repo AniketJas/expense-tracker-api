@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { initDB } from './configs/db.js';
 import ratelimiter from './middleware/rateLimiter.js';
 import cors from 'cors';
+import job from './configs/cron.js';
 
 import transactionsRoute from './routes/transactionsRoute.js';
 
@@ -17,14 +18,18 @@ app.use(ratelimiter)
 app.use(express.json());
 app.use(morgan('dev'));
 
+if (process.env.NODE_ENV === 'production') {
+  job.start();
+}
+
 app.use(cors({
   origin: "*", // or restrict to your frontend later
   methods: ["GET", "POST", "DELETE"],
 }));
 
 //routes
-app.get('/', (req, res) => {
-  res.status(200).send('Server is running!');
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ success: 1, status: "OK" });
 });
 
 app.use("/api/transactions", transactionsRoute);
