@@ -2,8 +2,6 @@ import { sql } from '../configs/db.js';
 
 const getTransactionsByUserId = async (req, res) => {
   try {
-    console.log('Fetching transactions for user:', req.params.userId);
-
     const { userId } = req.params;
     const transaction = await sql`SELECT * FROM transactions WHERE user_id = ${userId} ORDER BY created_at DESC;`;
 
@@ -16,7 +14,6 @@ const getTransactionsByUserId = async (req, res) => {
 
 const deleteTransactionById = async (req, res) => {
   try {
-    console.log('Deleting transaction with ID:', req.params.id);
     const { id } = req.params;
 
     if (isNaN(parseInt(id))) {
@@ -38,7 +35,6 @@ const deleteTransactionById = async (req, res) => {
 
 const createTransaction = async (req, res) => {
   try {
-    console.log('Creating new transaction with data:', req.body);
     const { user_id, title, amount, category } = req.body;
 
     if (!user_id || !title || amount === undefined || !category) {
@@ -59,7 +55,6 @@ const createTransaction = async (req, res) => {
 
 const getSummaryByUserId = async (req, res) => {
   try {
-    console.log('Fetching transaction summary for user:', req.params.userId);
     const { userId } = req.params;
 
     const balanceResult = await sql`SELECT 
